@@ -1,26 +1,176 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #0d9488;
+  --secondary: #0f172a;
+  --accent: #14b8a6;
+  --teal-soft: #ccfbf1;
+  --teal-tint: rgba(20, 184, 166, 0.08);
+  --teal-tint-strong: rgba(20, 184, 166, 0.14);
+  --teal-ring: rgba(20, 184, 166, 0.22);
+  --hero-panel: #ecfeff;
+  --page-top-glow: rgba(20, 184, 166, 0.14);
+  --page-side-glow: rgba(20, 184, 166, 0.08);
+  --page-grad-start: #fcfeff;
+  --page-grad-mid: #f5fbfd;
+  --page-grad-end: #eef7fb;
+  --bg: #f7fbfd;
+  --text: #1e293b;
+  --background: var(--bg);
+  --foreground: var(--text);
+  --surface: rgba(255, 255, 255, 0.9);
+  --surface-strong: #ffffff;
+  --card: #ffffff;
+  --line: rgba(15, 23, 42, 0.08);
+  --primary-dark: #0f766e;
+  --muted: #64748b;
+  --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  --cta-gradient: linear-gradient(135deg, #14b8a6 0%, #0f172a 100%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-teal-soft: var(--teal-soft);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background:
+    radial-gradient(circle at top left, var(--page-top-glow), transparent 34%),
+    radial-gradient(circle at 85% 16%, var(--page-side-glow), transparent 20%),
+    linear-gradient(180deg, var(--page-grad-start) 0%, var(--page-grad-mid) 52%, var(--page-grad-end) 100%);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-manrope), sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(20, 184, 166, 0.22);
+}
+
+.section-shell {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.glass-panel {
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.display-font {
+  font-family: var(--font-display), serif;
+}
+
+.section-kicker {
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.section-title {
+  font-family: var(--font-display), serif;
+  font-size: clamp(2rem, 3vw, 3.6rem);
+  line-height: 1;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.95fr;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.animate-in {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+  transition-delay: var(--delay, 0ms);
+}
+
+.animate-in[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.soft-ring {
+  position: relative;
+}
+
+.soft-ring::before {
+  content: "";
+  position: absolute;
+  inset: auto auto -48px -48px;
+  width: 180px;
+  height: 180px;
+  border: 1px solid var(--teal-ring);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.cta-surface {
+  background: var(--cta-gradient);
+}
+
+@media (max-width: 1024px) {
+  .hero-grid,
+  .why-grid,
+  .service-grid,
+  .project-grid,
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .section-shell {
+    width: min(100% - 1rem, 1180px);
+  }
 }
