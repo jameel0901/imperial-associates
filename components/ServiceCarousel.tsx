@@ -1,94 +1,293 @@
 "use client";
 
-import { useState } from "react";
-import Animate from "./Animate";
+import Image from "next/image";
+import type { TransitionEvent } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import SliderAshCaption from "./SliderAshCaption";
+import { useSliderNav } from "./SliderNavContext";
 
+/** Slide images: public/images filenames aligned to each service title */
 const slides = [
   {
     title: "Civil Construction",
-    description:
-      "Infrastructure and building civil works—earthworks, foundations, retaining structures, concrete packages, and site execution aligned to drawings and specifications.",
-    highlight: "Dependable site delivery from groundworks to structure.",
+    subtitle: "Earthworks, structures, and site execution for durable civil packages.",
+    image: "/images/civil-constructions.png",
+    alt: "Civil construction and site execution",
   },
   {
-    title: "DGPS & Drone Survey (Roads)",
-    description:
-      "DGPS control networks, aerial UAV mapping, orthophotos, contours, and corridor capture for road and highway packages—structured for design teams and approvals.",
-    highlight: "Precision geomatics for every chainage and cross-section.",
+    title: "DGPS and Drone Survey",
+    subtitle: "Precision control networks and aerial corridor capture for roads.",
+    image: "/images/DGPS%26Drone-survey.png",
+    alt: "DGPS and drone survey for roads and corridors",
   },
   {
-    title: "Road & Highway Design",
-    description:
-      "Horizontal and vertical alignment, geometric design, junction improvements, corridor planning, and DPR-ready drawing support for transportation projects.",
-    highlight: "Design logic that matches field conditions and standards.",
+    title: "MEP Design Services",
+    subtitle: "Mechanical, electrical, and plumbing design with coordinated documentation.",
+    image: "/images/MEP-services.png",
+    alt: "MEP mechanical electrical plumbing design",
   },
   {
-    title: "MEP Design",
-    description:
-      "Mechanical, electrical, and plumbing design with load planning, routing, coordination drawings, and installation-ready documentation for safer, efficient buildings.",
-    highlight: "Integrated building services from concept to execution.",
+    title: "Civil Architecture",
+    subtitle: "Spatial planning and architectural coordination from shell to fit-out.",
+    image: "/images/architecture.png",
+    alt: "Architecture and spatial planning",
   },
-  {
-    title: "Interior Design",
-    description:
-      "Space planning, layouts, finishes, and coordination with civil and MEP so interiors stay buildable, comfortable, and aligned with the overall project intent.",
-    highlight: "Rooms and workflows that feel intentional on site.",
-  },
-];
+] as const;
+
+const AUTOPLAY_MS = 5500;
+/** Horizontal shutter strips (reference: staggered row reveal, top finishes first) */
+const STRIP_COUNT = 8;
+const STRIP_STAGGER_MS = 70;
+const STRIP_DURATION_MS = 550;
 
 export default function ServiceCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
+  /** When set, strip-reveal animation is running from activeIndex → transitioningTo */
+  const [transitioningTo, setTransitioningTo] = useState<number | null>(null);
+  const [stripsOpen, setStripsOpen] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const stripOpenRaf = useRef<number | null>(null);
+  /** Target index for the in-flight strip animation (reliable on transition end) */
+  const pendingIndexRef = useRef<number | null>(null);
+  const transitionFinishedRef = useRef(false);
+  const sliderPresenceRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  /** After ash-out, start strip to this index */
+  const pendingAfterAshRef = useRef<number | null>(null);
+  const { setSliderInView } = useSliderNav();
+  const [isCaptionExiting, setIsCaptionExiting] = useState(false);
 
-  const setPrevious = () =>
-    setActiveIndex((current) => (current + slides.length - 1) % slides.length);
-  const setNext = () => setActiveIndex((current) => (current + 1) % slides.length);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
-  const slide = slides[activeIndex];
+  const isAnimating = transitioningTo !== null;
+
+  const finishTransition = useCallback(() => {
+    const target = pendingIndexRef.current;
+    pendingIndexRef.current = null;
+    if (target === null) return;
+    setActiveIndex(target);
+    setTransitioningTo(null);
+    setStripsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (transitioningTo !== null) transitionFinishedRef.current = false;
+  }, [transitioningTo]);
+
+  const handleCaptionAshExitComplete = useCallback(() => {
+    const next = pendingAfterAshRef.current;
+    pendingAfterAshRef.current = null;
+    setIsCaptionExiting(false);
+    if (next === null) return;
+    setStripsOpen(false);
+    pendingIndexRef.current = next;
+    setTransitioningTo(next);
+  }, []);
+
+  const goToIndex = useCallback(
+    (next: number) => {
+      if (next === activeIndex || isAnimating || isCaptionExiting) return;
+      if (reducedMotion) {
+        setActiveIndex(next);
+        return;
+      }
+      pendingAfterAshRef.current = next;
+      setIsCaptionExiting(true);
+    },
+    [activeIndex, isAnimating, isCaptionExiting, reducedMotion]
+  );
+
+  const goPrev = useCallback(() => {
+    goToIndex((activeIndex + slides.length - 1) % slides.length);
+  }, [activeIndex, goToIndex]);
+
+  const goNext = useCallback(() => {
+    goToIndex((activeIndex + 1) % slides.length);
+  }, [activeIndex, goToIndex]);
+
+  useEffect(() => {
+    if (transitioningTo === null) return;
+    stripOpenRaf.current = requestAnimationFrame(() => {
+      stripOpenRaf.current = requestAnimationFrame(() => setStripsOpen(true));
+    });
+    return () => {
+      if (stripOpenRaf.current !== null) cancelAnimationFrame(stripOpenRaf.current);
+    };
+  }, [transitioningTo]);
+
+  useEffect(() => {
+    if (reducedMotion || paused || isAnimating || isCaptionExiting) return;
+    const id = window.setInterval(goNext, AUTOPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [reducedMotion, paused, isAnimating, isCaptionExiting, goNext]);
+
+  useLayoutEffect(() => {
+    const el = sliderPresenceRef.current;
+    if (!el) return;
+
+    observerRef.current?.disconnect();
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setSliderInView(entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: "0px" }
+    );
+
+    observer.observe(el);
+    observerRef.current = observer;
+
+    return () => {
+      observer.disconnect();
+      observerRef.current = null;
+    };
+  }, [setSliderInView]);
+
+  const onLastStripTransitionEnd = useCallback(
+    (e: TransitionEvent<HTMLDivElement>) => {
+      if (e.propertyName !== "transform") return;
+      if (transitionFinishedRef.current) return;
+      transitionFinishedRef.current = true;
+      finishTransition();
+    },
+    [finishTransition]
+  );
+
+  const currentSlide = slides[activeIndex];
+  const incomingSlide = transitioningTo !== null ? slides[transitioningTo] : null;
+  const showCaptionLayer = isCaptionExiting || !isAnimating;
 
   return (
-    <section id="home-carousel" className="px-3 py-16 md:py-24">
-      <div className="section-shell">
-        <Animate className="stack-note max-w-3xl" delay={90}>
-          <p className="section-kicker">Featured services</p>
-          <h2 className="section-title mt-5">
-            Civil construction, road geomatics, MEP, and interiors—one coordinated practice.
-          </h2>
-          <p className="mt-8 text-lg leading-8 text-[var(--muted)]">
-            Step through our delivery pillars: field surveys with DGPS and drones, highway
-            design, building services, civil execution, and interior design for complete
-            built-environment support.
-          </p>
-        </Animate>
-
-        <div className="carousel-shell mt-12">
-          <div className="carousel-card">
-            <div className="carousel-card-head">
-              <span className="carousel-label">{slide.title}</span>
-              <p className="carousel-highlight mt-4">{slide.highlight}</p>
+    <section id="home-carousel" className="service-image-slider-section">
+      <div
+        ref={sliderPresenceRef}
+        className="service-image-slider-fullbleed"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        <div className="service-image-slider">
+          <div
+            className="service-image-slider-viewport service-image-slider-viewport--fullscreen"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label={`Featured service slides. Current: ${currentSlide.title}.`}
+          >
+            {/* Base layer: current slide (visible until strips reveal the next image) */}
+            <div className="service-image-slider-base">
+              <Image
+                src={currentSlide.image}
+                alt={isAnimating ? "" : currentSlide.alt}
+                fill
+                sizes="100vw"
+                className="service-image-slider-img"
+                priority
+                aria-hidden={isAnimating}
+              />
             </div>
-            <p className="carousel-description mt-6">{slide.description}</p>
-          </div>
 
-          <div className="carousel-controls">
-            <button type="button" onClick={setPrevious} className="carousel-button button-lift">
-              Previous
-            </button>
-
-            <div className="carousel-dot-list" aria-label="Service carousel navigation">
-              {slides.map((item, index) => (
-                <button
-                  key={item.title}
-                  type="button"
-                  className={`carousel-dot${index === activeIndex ? " active" : ""}`}
-                  onClick={() => setActiveIndex(index)}
-                  aria-label={`Show ${item.title}`}
+            {/* Incoming layer + white shutter strips */}
+            {incomingSlide && transitioningTo !== null && (
+              <div className="service-image-slider-reveal-layer" aria-hidden>
+                <Image
+                  src={incomingSlide.image}
+                  alt={incomingSlide.alt}
+                  fill
+                  sizes="100vw"
+                  className="service-image-slider-img"
                 />
-              ))}
-            </div>
+                <div className="service-image-slider-strips" aria-hidden>
+                  {Array.from({ length: STRIP_COUNT }).map((_, i) => (
+                    <div
+                      key={i}
+                      className={`service-image-slider-strip${stripsOpen ? " is-open" : ""}`}
+                      style={
+                        {
+                          "--strip-i": i,
+                          "--strip-stagger": `${i * STRIP_STAGGER_MS}ms`,
+                          "--strip-dur": `${STRIP_DURATION_MS}ms`,
+                        } as React.CSSProperties
+                      }
+                      onTransitionEnd={
+                        i === STRIP_COUNT - 1 ? onLastStripTransitionEnd : undefined
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
 
-            <button type="button" onClick={setNext} className="carousel-button button-lift">
-              Next
-            </button>
+            {/* Caption: ash-out, then strip; ash-in after strip. Hidden during strip only. */}
+            {showCaptionLayer && (
+              <>
+                <div className="service-image-slider-scrim" aria-hidden />
+                <SliderAshCaption
+                  key={activeIndex}
+                  animationKey={activeIndex}
+                  isExiting={isCaptionExiting}
+                  reducedMotion={reducedMotion}
+                  onExitComplete={handleCaptionAshExitComplete}
+                  className="service-image-slider-caption"
+                >
+                  <p className="service-image-slider-kicker">Featured</p>
+                  <h3 className="service-image-slider-title service-image-slider-title-shiny">
+                    {currentSlide.title}
+                  </h3>
+                  <p className="service-image-slider-sub">{currentSlide.subtitle}</p>
+                  <a href="#services" className="service-image-slider-cta">
+                    Read more <span aria-hidden>→</span>
+                  </a>
+                </SliderAshCaption>
+              </>
+            )}
+
+            <div className="service-image-slider-chrome">
+              <div className="service-image-slider-chrome-spacer" aria-hidden />
+              <div
+                className="service-image-slider-dots"
+                role="tablist"
+                aria-label="Slide selection"
+              >
+                {slides.map((slide, index) => (
+                  <button
+                    key={slide.title}
+                    type="button"
+                    role="tab"
+                    disabled={isAnimating || isCaptionExiting}
+                    aria-selected={index === activeIndex && !isAnimating && !isCaptionExiting}
+                    aria-label={`Show slide ${index + 1}: ${slide.title}`}
+                    className={`service-image-slider-dot${index === activeIndex && !isAnimating && !isCaptionExiting ? " is-active" : ""}`}
+                    onClick={() => goToIndex(index)}
+                  />
+                ))}
+              </div>
+              <div className="service-image-slider-arrows">
+                <button
+                  type="button"
+                  className="service-image-slider-arrow button-lift"
+                  onClick={goPrev}
+                  disabled={isAnimating || isCaptionExiting}
+                  aria-label="Previous slide"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  className="service-image-slider-arrow button-lift"
+                  onClick={goNext}
+                  disabled={isAnimating || isCaptionExiting}
+                  aria-label="Next slide"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

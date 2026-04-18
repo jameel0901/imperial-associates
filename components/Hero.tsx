@@ -1,72 +1,173 @@
+"use client";
+
 import Image from "next/image";
-import Animate from "./Animate";
+import { useEffect, useRef, useState } from "react";
+
+const mosaic = [
+  {
+    src: "/images/civil-constructions.png",
+    label: "Civil",
+    alt: "Civil construction and site works",
+  },
+  {
+    src: "/images/DGPS%26Drone-survey.png",
+    label: "Survey",
+    alt: "DGPS and drone survey for corridors and roads",
+  },
+  {
+    src: "/images/MEP-services.png",
+    label: "MEP",
+    alt: "Mechanical, electrical, and plumbing design",
+  },
+  {
+    src: "/images/architecture.png",
+    label: "Architecture",
+    alt: "Architecture and spatial planning",
+  },
+] as const;
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const onChange = () => setReduced(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return reduced;
+}
 
 export default function Hero() {
-  return (
-    <section id="top" className="editorial-frame px-3 pb-18 pt-10 md:pb-24 md:pt-14">
-      <div className="section-shell hero-grid items-end gap-10">
-        <Animate className="soft-ring hero-card p-8 md:p-12" delay={60}>
-          <p className="section-kicker">Civil · Survey · MEP · Interiors</p>
-          <h1 className="section-title mt-6 max-w-4xl">
-            Integrated <span className="text-[var(--primary)]">engineering</span> and design
-            for roads, buildings, and spaces.
-          </h1>
-          <p className="mt-8 max-w-2xl text-xl leading-9 text-[var(--muted)]">
-            Imperial Associates brings together civil construction, DGPS and drone survey for
-            road corridors, highway and alignment design, MEP systems, and interior design—so
-            infrastructure and interiors move forward with one clear technical thread.
-          </p>
+  const sectionRef = useRef<HTMLElement>(null);
+  const [entered, setEntered] = useState(false);
+  /** True while hero is on screen — drives continuous ambient animation */
+  const [alive, setAlive] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <a
-              href="#services"
-              className="button-lift rounded-full bg-[var(--accent)] px-7 py-4 text-center text-sm font-semibold text-white"
-            >
-              Explore Services
-            </a>
-            <a
-              href="#contact"
-              className="button-lift rounded-full border border-[var(--line)] bg-white px-7 py-4 text-center text-sm font-semibold text-[var(--secondary)]"
-            >
-              Get Proposal
-            </a>
+  useEffect(() => {
+    if (reducedMotion) {
+      setEntered(true);
+      setAlive(true);
+      return;
+    }
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const reveal = () => setEntered(true);
+
+    const obsEnter = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          reveal();
+          obsEnter.disconnect();
+        }
+      },
+      { threshold: 0, rootMargin: "120px 0px 120px 0px" }
+    );
+    obsEnter.observe(el);
+
+    const rafId = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        if (rect.top < vh * 0.92 && rect.bottom > -rect.height * 0.35) {
+          reveal();
+        }
+      });
+    });
+
+    const obsAlive = new IntersectionObserver(
+      ([e]) => {
+        setAlive(e.isIntersecting);
+      },
+      { threshold: 0, rootMargin: "80px 0px 80px 0px" }
+    );
+    obsAlive.observe(el);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      obsEnter.disconnect();
+      obsAlive.disconnect();
+    };
+  }, [reducedMotion]);
+
+  return (
+    <section
+      id="top"
+      ref={sectionRef}
+      className={`hero-v2 relative overflow-x-clip px-3 py-12 sm:py-14 md:py-20 ${entered ? "hero-v2--visible" : ""} ${alive ? "hero-v2--alive" : ""}`}
+    >
+      <div className="hero-v2-bg" aria-hidden />
+      <div className="hero-v2-blob hero-v2-blob--a" aria-hidden />
+      <div className="hero-v2-blob hero-v2-blob--b" aria-hidden />
+      <div className="hero-v2-blob hero-v2-blob--c" aria-hidden />
+      <div className="hero-v2-noise" aria-hidden />
+      <div className="hero-v2-shine" aria-hidden />
+
+      <div className="section-shell relative z-[1] max-w-full">
+        <div className="hero-v2-layout">
+          <div className="hero-v2-copy min-w-0">
+            <p className="hero-v2-eyebrow">Imperial Associates</p>
+
+            <h1 className="hero-v2-title display-font">
+              <span className="hero-v2-line">From precision survey</span>
+              <span className="hero-v2-line">
+                to <span className="hero-v2-shimmer">built reality</span>
+              </span>
+              <span className="hero-v2-line hero-v2-line--sub">
+                Civil, geomatics, MEP &amp; interiors—one accountable thread.
+              </span>
+            </h1>
+
+            <p className="hero-v2-lede">
+              Road corridors, structures, building services, and interior coordination—documented
+              and delivered so field, design, and approvals stay aligned.
+            </p>
+
+            <div className="hero-v2-actions">
+              <a
+                href="#services"
+                className="button-lift inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-[var(--accent)] px-7 py-3.5 text-sm font-semibold text-white"
+              >
+                View capabilities
+              </a>
+              <a
+                href="#contact"
+                className="button-lift inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-[var(--line)] bg-white/90 px-7 py-3.5 text-sm font-semibold text-[var(--secondary)] shadow-sm"
+              >
+                Start a project
+              </a>
+            </div>
+
+            <ul className="hero-v2-chips" aria-label="Core disciplines">
+              {["Civil & structures", "Geomatics & roads", "MEP & interiors"].map((t) => (
+                <li key={t} className="hero-v2-chip">
+                  {t}
+                </li>
+              ))}
+            </ul>
           </div>
 
-          <div className="metrics-grid mt-14 gap-6">
-            {[
-              ["One team", "Civil, survey, MEP, and interior coordination"],
-              ["DGPS · Drone", "Road corridor geomatics and mapping"],
-              ["Integrated", "Drawings, surveys, and site-ready outputs"],
-            ].map(([title, text], index) => (
-              <Animate key={title} className="metric-item" delay={200 + index * 90}>
-                <h3 className="display-font text-[clamp(1.65rem,3.2vw,2.35rem)] leading-tight text-[var(--secondary)]">
-                  {title}
-                </h3>
-                <p className="mt-3 text-xs uppercase tracking-[0.24em] text-[var(--muted)]">
-                  {text}
-                </p>
-              </Animate>
+          <div className="hero-v2-mosaic min-w-0" aria-label="Service imagery">
+            {mosaic.map((item, i) => (
+              <figure key={item.src} className={`hero-v2-card hero-v2-card--${i + 1}`}>
+                <div className="hero-v2-card-frame">
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    sizes="(max-width: 720px) 42vw, (max-width: 1100px) 26vw, 20vw"
+                    className="hero-v2-card-img object-cover"
+                    priority={i < 2}
+                  />
+                  <div className="hero-v2-card-scrim" aria-hidden />
+                </div>
+                <figcaption className="hero-v2-card-cap">{item.label}</figcaption>
+              </figure>
             ))}
           </div>
-        </Animate>
-
-        <Animate className="hero-image-shell" delay={180}>
-          <Image
-            src="/images/hero.jpg"
-            alt="Infrastructure and built environment representing civil and design work"
-            width={1100}
-            height={1400}
-            className="h-full w-full object-cover"
-            priority
-          />
-          <div className="hero-badge">Built environments</div>
-          <div className="floating-note">
-            <p className="text-sm uppercase tracking-[0.22em] text-[var(--primary)]">Core scope</p>
-            <p className="display-font mt-3 text-[2rem] leading-[1.05] text-[var(--secondary)]">
-              DGPS and UAV surveys, road design, MEP, civil works, and interior fit-outs.
-            </p>
-          </div>
-        </Animate>
+        </div>
       </div>
     </section>
   );

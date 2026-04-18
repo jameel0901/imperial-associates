@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +16,13 @@ export const metadata: Metadata = {
   title: "Imperial Associates | Civil, MEP, Survey & Interior",
   description:
     "Civil construction, road and highway design, DGPS and drone survey, MEP engineering, and interior design—integrated delivery for infrastructure and built environments.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0d9488",
 };
 
 export default function RootLayout({

@@ -30,7 +30,9 @@ export default function WhyUs() {
                 <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[var(--teal-soft)] text-sm font-bold text-[var(--primary-dark)]">
                   {index + 1}
                 </span>
-                <p className="text-xl leading-8 text-[var(--secondary)]">{reason}</p>
+                <p className="text-[1.05rem] leading-7 text-[var(--secondary)] sm:text-xl sm:leading-8">
+                  {reason}
+                </p>
               </div>
             </Animate>
           ))}

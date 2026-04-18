@@ -48,11 +48,11 @@ export default function Projects() {
                   className="project-image h-[29rem] w-full object-cover"
                 />
               </div>
-              <div className="p-8 md:p-10">
+              <div className="p-6 sm:p-8 md:p-10">
                 <span className="inline-flex rounded-full bg-[var(--teal-tint-strong)] px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--primary)]">
                   {leadProject.category}
                 </span>
-                <h3 className="display-font mt-6 text-[3.2rem] leading-[0.96] text-[var(--secondary)]">
+                <h3 className="display-font mt-6 text-[clamp(1.65rem,5.5vw,3.2rem)] leading-[0.98] text-[var(--secondary)]">
                   {leadProject.title}
                 </h3>
                 <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--muted)]">
@@ -85,7 +85,7 @@ export default function Projects() {
                   <span className="inline-flex rounded-full bg-[var(--teal-tint-strong)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--primary)]">
                     {project.category}
                   </span>
-                  <h3 className="display-font mt-5 text-[2.2rem] leading-[1] text-[var(--secondary)]">
+                  <h3 className="display-font mt-5 text-[clamp(1.35rem,4.2vw,2.2rem)] leading-[1.05] text-[var(--secondary)]">
                     {project.title}
                   </h3>
                   <p className="mt-4 text-base leading-8 text-[var(--muted)]">{project.text}</p>

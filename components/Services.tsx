@@ -98,7 +98,7 @@ export default function Services() {
                 <Animate className="service-row" delay={150 + index * 80}>
                   <span className="service-index">{service.displayIndex}</span>
                   <div>
-                    <h4 className="display-font text-[2.15rem] leading-[1.02] text-[var(--secondary)]">
+                    <h4 className="display-font text-[clamp(1.35rem,4vw,2.15rem)] leading-[1.08] text-[var(--secondary)]">
                       {service.title}
                     </h4>
                     <p className="mt-3 max-w-2xl text-base leading-8 text-[var(--muted)]">
