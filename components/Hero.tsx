@@ -3,74 +3,68 @@ import Animate from "./Animate";
 
 export default function Hero() {
   return (
-    <section id="top" className="px-3 pb-10 pt-8 md:pb-16 md:pt-10">
-      <div className="section-shell hero-grid items-stretch gap-6">
-        <Animate className="soft-ring glass-panel flex flex-col justify-between rounded-[2rem] p-7 md:p-10">
-          <div className="space-y-6">
-            <p className="section-kicker">Roads and Highways</p>
-            <h1 className="section-title max-w-3xl text-[var(--foreground)]">
-              Smart <span className="text-[var(--primary)]">designing</span> and dependable survey
-              solutions.
-            </h1>
-            <p className="max-w-2xl text-lg leading-8 text-[var(--muted)]">
-              Imperial Associates supports road and highway development with
-              alignment planning, detailed surveying, layout marking, corridor
-              studies, and field-ready engineering documentation.
-            </p>
-          </div>
+    <section id="top" className="editorial-frame px-3 pb-18 pt-10 md:pb-24 md:pt-14">
+      <div className="section-shell hero-grid items-end gap-10">
+        <Animate className="soft-ring hero-card p-8 md:p-12" delay={60}>
+          <p className="section-kicker">Civil · Survey · MEP · Interiors</p>
+          <h1 className="section-title mt-6 max-w-4xl">
+            Integrated <span className="text-[var(--primary)]">engineering</span> and design
+            for roads, buildings, and spaces.
+          </h1>
+          <p className="mt-8 max-w-2xl text-xl leading-9 text-[var(--muted)]">
+            Imperial Associates brings together civil construction, DGPS and drone survey for
+            road corridors, highway and alignment design, MEP systems, and interior design—so
+            infrastructure and interiors move forward with one clear technical thread.
+          </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <a
               href="#services"
-              className="rounded-full bg-[var(--primary)] px-6 py-4 text-center text-sm font-bold text-[var(--secondary)] transition hover:bg-[var(--accent)]"
+              className="button-lift rounded-full bg-[var(--accent)] px-7 py-4 text-center text-sm font-semibold text-white"
             >
               Explore Services
             </a>
             <a
               href="#contact"
-              className="rounded-full border border-[var(--line)] bg-[var(--surface-strong)] px-6 py-4 text-center text-sm font-bold text-[var(--text)] transition hover:border-[var(--primary)] hover:text-[var(--primary)]"
+              className="button-lift rounded-full border border-[var(--line)] bg-white px-7 py-4 text-center text-sm font-semibold text-[var(--secondary)]"
             >
               Get Proposal
             </a>
           </div>
 
-          <div className="mt-10 grid gap-4 border-t border-[var(--line)] pt-6 sm:grid-cols-3">
+          <div className="metrics-grid mt-14 gap-6">
             {[
-              ["125+", "Survey Assignments"],
-              ["60+", "Road and Layout Plans"],
-              ["18+", "Districts Covered"],
-            ].map(([title, text]) => (
-              <div key={title}>
-                <h3 className="display-font text-4xl text-[var(--foreground)]">{title}</h3>
-                <p className="mt-2 text-sm leading-7 uppercase tracking-[0.16em] text-[var(--muted)]">
+              ["One team", "Civil, survey, MEP, and interior coordination"],
+              ["DGPS · Drone", "Road corridor geomatics and mapping"],
+              ["Integrated", "Drawings, surveys, and site-ready outputs"],
+            ].map(([title, text], index) => (
+              <Animate key={title} className="metric-item" delay={200 + index * 90}>
+                <h3 className="display-font text-[clamp(1.65rem,3.2vw,2.35rem)] leading-tight text-[var(--secondary)]">
+                  {title}
+                </h3>
+                <p className="mt-3 text-xs uppercase tracking-[0.24em] text-[var(--muted)]">
                   {text}
                 </p>
-              </div>
+              </Animate>
             ))}
           </div>
         </Animate>
 
-        <Animate className="relative overflow-hidden rounded-[2rem] bg-[var(--hero-panel)] p-4 md:p-5" delay={140}>
+        <Animate className="hero-image-shell" delay={180}>
           <Image
             src="/images/hero.jpg"
-            alt="Roadside infrastructure and modern engineering landscape"
-            width={900}
-            height={1100}
-            className="h-full min-h-[520px] w-full rounded-[1.6rem] object-cover"
+            alt="Infrastructure and built environment representing civil and design work"
+            width={1100}
+            height={1400}
+            className="h-full w-full object-cover"
             priority
           />
-          <div className="absolute left-7 top-7 rounded-full bg-[var(--accent)] px-5 py-2 text-xs font-bold uppercase tracking-[0.18em] text-[var(--secondary)] shadow-sm">
-            Highway Planning
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-            <div className="glass-panel max-w-sm rounded-[1.5rem] p-5">
-              <p className="text-sm uppercase tracking-[0.18em] text-[var(--primary)]">
-                Core scope
-              </p>
-              <p className="mt-2 display-font text-2xl">
-                Alignment design, DPR support, topographic surveys, and layout setting-out.
-              </p>
-            </div>
+          <div className="hero-badge">Built environments</div>
+          <div className="floating-note">
+            <p className="text-sm uppercase tracking-[0.22em] text-[var(--primary)]">Core scope</p>
+            <p className="display-font mt-3 text-[2rem] leading-[1.05] text-[var(--secondary)]">
+              DGPS and UAV surveys, road design, MEP, civil works, and interior fit-outs.
+            </p>
           </div>
         </Animate>
       </div>

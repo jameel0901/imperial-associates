@@ -2,37 +2,46 @@ import Animate from "./Animate";
 
 const stats = [
   {
-    value: "Road Design",
-    label: "Geometric design, carriageway planning, junction treatment, and corridor development.",
+    value: "Civil construction",
+    label:
+      "Earthworks, foundations, structural packages, and site execution for infrastructure and building shells.",
   },
   {
-    value: "Highway Surveys",
-    label: "Topographic, route, cross-section, and centerline surveys for field and design teams.",
+    value: "Roads & geomatics",
+    label:
+      "DGPS and drone survey, topographic and corridor capture, alignment and highway design, layout and stakeout.",
   },
   {
-    value: "Layout Survey",
-    label: "Plot demarcation, site layout marking, and engineering setting-out for execution.",
+    value: "MEP design",
+    label:
+      "Mechanical, electrical, and plumbing design, routing, coordination, and documentation for reliable building services.",
   },
   {
-    value: "Documentation",
-    label: "Profiles, quantity inputs, survey drawings, and design-ready technical outputs.",
+    value: "Interior design",
+    label:
+      "Space planning, finishes, and coordination with structure and MEP so interiors are buildable and cohesive.",
   },
 ];
 
 export default function Stats() {
   return (
-    <section id="about" className="px-3 py-8 md:py-14">
-      <div className="section-shell grid gap-4 md:grid-cols-4">
-        {stats.map((stat, index) => (
-          <Animate key={stat.value} delay={index * 80}>
-            <div className="glass-panel h-full rounded-[1.75rem] p-6">
-              <p className="text-sm font-bold uppercase tracking-[0.18em] text-[var(--primary)]">
-                {stat.value}
-              </p>
-              <p className="mt-3 text-sm leading-7 text-[var(--muted)]">{stat.label}</p>
-            </div>
-          </Animate>
-        ))}
+    <section id="about" className="px-3 py-8 md:py-16">
+      <div className="section-shell">
+        <Animate className="max-w-3xl" delay={80}>
+          <p className="section-kicker">About Us</p>
+          <h2 className="section-title mt-5 max-w-4xl">
+            Civil construction, road survey and design, MEP engineering, and interior design—delivered as one practice.
+          </h2>
+        </Animate>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {stats.map((stat, index) => (
+            <Animate key={stat.value} className="glass-panel rounded-[1.75rem] p-7" delay={120 + index * 90}>
+              <p className="section-kicker">{stat.value}</p>
+              <p className="mt-5 text-lg leading-8 text-[var(--muted)]">{stat.label}</p>
+            </Animate>
+          ))}
+        </div>
       </div>
     </section>
   );
