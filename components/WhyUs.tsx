@@ -14,7 +14,7 @@ export default function WhyUs() {
         <Animate className="why-panel p-8 md:p-10" delay={90}>
           <p className="section-kicker">Why Imperial Associates</p>
           <h2 className="section-title mt-5 max-w-xl">
-            Why teams choose us for <span className="text-[var(--primary)]">civil through interiors</span>
+            Why teams <span className="section-title-em">choose us</span> for civil through interiors
           </h2>
           <p className="mt-8 max-w-xl text-lg leading-8 text-[var(--muted)]">
             We combine road and corridor geomatics with structural civil delivery, building services, and

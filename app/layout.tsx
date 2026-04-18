@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Playfair_Display } from "next/font/google";
+import AppChrome from "@/components/AppChrome";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -35,7 +37,10 @@ export default function RootLayout({
       lang="en"
       className={`${manrope.variable} ${playfair.variable} h-full scroll-smooth`}
     >
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        <AppChrome>{children}</AppChrome>
+        <Footer />
+      </body>
     </html>
   );
 }

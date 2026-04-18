@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useId, useState } from "react";
 import { useSliderNav } from "./SliderNavContext";
 
@@ -37,11 +38,19 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="site-header sticky top-0 z-50 px-3 pt-3 pb-2 sm:px-3 sm:pt-4">
-        <div className="nav-shell section-shell flex items-center justify-between gap-3 rounded-2xl px-4 py-3 sm:rounded-full sm:px-5 sm:py-4 md:px-7">
-          <a href="#top" className="flex min-w-0 items-center gap-3 sm:gap-4">
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--teal-soft)] text-xs font-bold tracking-[0.22em] text-[var(--secondary)] sm:h-12 sm:w-12 sm:text-sm">
-              IA
+      <header className="site-header sticky top-0 z-50 px-3 pt-2 pb-1.5 sm:px-3 sm:pt-2.5 sm:pb-2">
+        <div className="nav-shell section-shell flex items-center justify-between gap-3 rounded-2xl px-4 py-2 sm:rounded-full sm:px-5 sm:py-2.5 md:px-7">
+          <a href="#top" className="flex min-w-0 items-center gap-0">
+            <span className="relative inline-flex h-20 w-fit shrink-0 items-center sm:h-24">
+              <Image
+                src="/images/logo.png"
+                alt="Imperial Associates"
+                width={400}
+                height={133}
+                className="block h-20 w-auto max-w-none object-contain object-left sm:h-24"
+                priority
+                sizes="(max-width: 640px) 220px, 280px"
+              />
             </span>
             <div className="min-w-0">
               <p className="display-font truncate text-[1.25rem] leading-none text-[var(--secondary)] sm:text-[1.45rem] lg:text-[1.7rem]">

@@ -8,11 +8,10 @@ import WhyUs from "../components/WhyUs";
 import AllServicesImage from "../components/AllServicesImage";
 import CTA from "../components/CTA";
 import ServiceCarousel from "@/components/ServiceCarousel";
-import { SliderNavProvider } from "@/components/SliderNavContext";
 
 export default function Home() {
   return (
-    <SliderNavProvider>
+    <>
       <Navbar />
       <main>
         <ServiceCarousel />
@@ -25,6 +24,6 @@ export default function Home() {
         <AllServicesImage />
         <CTA />
       </main>
-    </SliderNavProvider>
+    </>
   );
 }

@@ -165,7 +165,8 @@ export default function OurWorks() {
         <Animate delay={80}>
           <p className="section-kicker">Our Works</p>
           <h2 className="section-title mt-5 max-w-4xl">
-            Comfortable, coordinated workspaces for infrastructure and the built environment.
+            Comfortable, coordinated workspaces for infrastructure and the{" "}
+            <span className="section-title-em">built environment</span>.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--muted)]">
             From civil packages and corridor surveys to MEP coordination and interiors—we deliver

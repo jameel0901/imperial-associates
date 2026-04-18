@@ -6,7 +6,7 @@ export default function AllServicesImage() {
       <div className="section-shell">
         <p className="section-kicker">All services</p>
         <h2 className="section-title mt-5 max-w-4xl">
-          Civil, survey, MEP, and interiors—one integrated scope.
+          Civil, survey, MEP, and interiors—<span className="section-title-em">one integrated</span> scope.
         </h2>
         <div className="mt-10 overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface-strong)] shadow-[var(--deep-shadow)]">
           <Image

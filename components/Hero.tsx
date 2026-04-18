@@ -113,7 +113,7 @@ export default function Hero() {
             <h1 className="hero-v2-title display-font">
               <span className="hero-v2-line">From precision survey</span>
               <span className="hero-v2-line">
-                to <span className="hero-v2-shimmer">built reality</span>
+                to <span className="section-title-em">built reality</span>
               </span>
               <span className="hero-v2-line hero-v2-line--sub">
                 Civil, geomatics, MEP &amp; interiors—one accountable thread.

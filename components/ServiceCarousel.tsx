@@ -34,29 +34,44 @@ const slides = [
   },
 ] as const;
 
+const SLIDE_COUNT = slides.length;
 const AUTOPLAY_MS = 5500;
-/** Horizontal shutter strips (reference: staggered row reveal, top finishes first) */
 const STRIP_COUNT = 8;
 const STRIP_STAGGER_MS = 70;
 const STRIP_DURATION_MS = 550;
+const STRIP_COMPLETE_FALLBACK_MS =
+  STRIP_DURATION_MS + (STRIP_COUNT - 1) * STRIP_STAGGER_MS + 400;
+const CAPTION_EXIT_FALLBACK_MS = 1100;
 
 export default function ServiceCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  /** When set, strip-reveal animation is running from activeIndex → transitioningTo */
   const [transitioningTo, setTransitioningTo] = useState<number | null>(null);
   const [stripsOpen, setStripsOpen] = useState(false);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isCaptionExiting, setIsCaptionExiting] = useState(false);
+  const [tabHidden, setTabHidden] = useState(false);
+
   const stripOpenRaf = useRef<number | null>(null);
-  /** Target index for the in-flight strip animation (reliable on transition end) */
   const pendingIndexRef = useRef<number | null>(null);
   const transitionFinishedRef = useRef(false);
+  const pendingAfterAshRef = useRef<number | null>(null);
   const sliderPresenceRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  /** After ash-out, start strip to this index */
-  const pendingAfterAshRef = useRef<number | null>(null);
+
+  const activeIndexRef = useRef(0);
+  const isStripPhaseRef = useRef(false);
+  const isCaptionExitingRef = useRef(false);
+  const pausedRef = useRef(false);
+  const reducedMotionRef = useRef(false);
+  const tabHiddenRef = useRef(false);
+
   const { setSliderInView } = useSliderNav();
-  const [isCaptionExiting, setIsCaptionExiting] = useState(false);
+
+  const isStripPhase = transitioningTo !== null;
+  isStripPhaseRef.current = isStripPhase;
+
+  const transitionBusy = isCaptionExiting || isStripPhase;
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -66,9 +81,15 @@ export default function ServiceCarousel() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  const isAnimating = transitioningTo !== null;
+  useLayoutEffect(() => {
+    activeIndexRef.current = activeIndex;
+    isCaptionExitingRef.current = isCaptionExiting;
+    pausedRef.current = paused;
+    reducedMotionRef.current = reducedMotion;
+    tabHiddenRef.current = tabHidden;
+  });
 
-  const finishTransition = useCallback(() => {
+  const finishStripTransition = useCallback(() => {
     const target = pendingIndexRef.current;
     pendingIndexRef.current = null;
     if (target === null) return;
@@ -81,36 +102,52 @@ export default function ServiceCarousel() {
     if (transitioningTo !== null) transitionFinishedRef.current = false;
   }, [transitioningTo]);
 
-  const handleCaptionAshExitComplete = useCallback(() => {
+  const beginStripReveal = useCallback((next: number) => {
+    pendingIndexRef.current = next;
+    setStripsOpen(false);
+    setTransitioningTo(next);
+  }, []);
+
+  const onCaptionExitComplete = useCallback(() => {
     const next = pendingAfterAshRef.current;
     pendingAfterAshRef.current = null;
     setIsCaptionExiting(false);
     if (next === null) return;
-    setStripsOpen(false);
-    pendingIndexRef.current = next;
-    setTransitioningTo(next);
+    beginStripReveal(next);
+  }, [beginStripReveal]);
+
+  useEffect(() => {
+    if (!isCaptionExiting || reducedMotion) return;
+    const expected = pendingAfterAshRef.current;
+    if (expected === null) return;
+    const id = window.setTimeout(() => {
+      if (!isCaptionExitingRef.current) return;
+      if (pendingAfterAshRef.current !== expected) return;
+      pendingAfterAshRef.current = null;
+      setIsCaptionExiting(false);
+      beginStripReveal(expected);
+    }, CAPTION_EXIT_FALLBACK_MS);
+    return () => window.clearTimeout(id);
+  }, [isCaptionExiting, reducedMotion, beginStripReveal]);
+
+  const goToIndex = useCallback((next: number) => {
+    if (next === activeIndexRef.current) return;
+    if (isCaptionExitingRef.current || isStripPhaseRef.current) return;
+    if (reducedMotionRef.current) {
+      setActiveIndex(next);
+      return;
+    }
+    pendingAfterAshRef.current = next;
+    setIsCaptionExiting(true);
   }, []);
 
-  const goToIndex = useCallback(
-    (next: number) => {
-      if (next === activeIndex || isAnimating || isCaptionExiting) return;
-      if (reducedMotion) {
-        setActiveIndex(next);
-        return;
-      }
-      pendingAfterAshRef.current = next;
-      setIsCaptionExiting(true);
-    },
-    [activeIndex, isAnimating, isCaptionExiting, reducedMotion]
-  );
-
   const goPrev = useCallback(() => {
-    goToIndex((activeIndex + slides.length - 1) % slides.length);
-  }, [activeIndex, goToIndex]);
+    goToIndex((activeIndexRef.current + SLIDE_COUNT - 1) % SLIDE_COUNT);
+  }, [goToIndex]);
 
   const goNext = useCallback(() => {
-    goToIndex((activeIndex + 1) % slides.length);
-  }, [activeIndex, goToIndex]);
+    goToIndex((activeIndexRef.current + 1) % SLIDE_COUNT);
+  }, [goToIndex]);
 
   useEffect(() => {
     if (transitioningTo === null) return;
@@ -123,27 +160,42 @@ export default function ServiceCarousel() {
   }, [transitioningTo]);
 
   useEffect(() => {
-    if (reducedMotion || paused || isAnimating || isCaptionExiting) return;
-    const id = window.setInterval(goNext, AUTOPLAY_MS);
-    return () => window.clearInterval(id);
-  }, [reducedMotion, paused, isAnimating, isCaptionExiting, goNext]);
+    if (transitioningTo === null) return;
+    const id = window.setTimeout(() => {
+      if (transitionFinishedRef.current) return;
+      transitionFinishedRef.current = true;
+      finishStripTransition();
+    }, STRIP_COMPLETE_FALLBACK_MS);
+    return () => window.clearTimeout(id);
+  }, [transitioningTo, finishStripTransition]);
+
+  useEffect(() => {
+    if (reducedMotion || paused || tabHidden || transitionBusy) return;
+    const id = window.setTimeout(() => {
+      if (reducedMotionRef.current || pausedRef.current || tabHiddenRef.current) return;
+      if (isCaptionExitingRef.current || isStripPhaseRef.current) return;
+      goToIndex((activeIndexRef.current + 1) % SLIDE_COUNT);
+    }, AUTOPLAY_MS);
+    return () => window.clearTimeout(id);
+  }, [reducedMotion, paused, tabHidden, transitionBusy, activeIndex, goToIndex]);
+
+  useEffect(() => {
+    const sync = () => setTabHidden(document.visibilityState === "hidden");
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    return () => document.removeEventListener("visibilitychange", sync);
+  }, []);
 
   useLayoutEffect(() => {
     const el = sliderPresenceRef.current;
     if (!el) return;
-
     observerRef.current?.disconnect();
-
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setSliderInView(entry.isIntersecting);
-      },
+      ([entry]) => setSliderInView(entry.isIntersecting),
       { threshold: 0, rootMargin: "0px" }
     );
-
     observer.observe(el);
     observerRef.current = observer;
-
     return () => {
       observer.disconnect();
       observerRef.current = null;
@@ -155,14 +207,14 @@ export default function ServiceCarousel() {
       if (e.propertyName !== "transform") return;
       if (transitionFinishedRef.current) return;
       transitionFinishedRef.current = true;
-      finishTransition();
+      finishStripTransition();
     },
-    [finishTransition]
+    [finishStripTransition]
   );
 
   const currentSlide = slides[activeIndex];
   const incomingSlide = transitioningTo !== null ? slides[transitioningTo] : null;
-  const showCaptionLayer = isCaptionExiting || !isAnimating;
+  const showCaptionLayer = isCaptionExiting || !isStripPhase;
 
   return (
     <section id="home-carousel" className="service-image-slider-section">
@@ -179,20 +231,18 @@ export default function ServiceCarousel() {
             aria-roledescription="carousel"
             aria-label={`Featured service slides. Current: ${currentSlide.title}.`}
           >
-            {/* Base layer: current slide (visible until strips reveal the next image) */}
             <div className="service-image-slider-base">
               <Image
                 src={currentSlide.image}
-                alt={isAnimating ? "" : currentSlide.alt}
+                alt={isStripPhase ? "" : currentSlide.alt}
                 fill
                 sizes="100vw"
                 className="service-image-slider-img"
                 priority
-                aria-hidden={isAnimating}
+                aria-hidden={isStripPhase}
               />
             </div>
 
-            {/* Incoming layer + white shutter strips */}
             {incomingSlide && transitioningTo !== null && (
               <div className="service-image-slider-reveal-layer" aria-hidden>
                 <Image
@@ -223,7 +273,6 @@ export default function ServiceCarousel() {
               </div>
             )}
 
-            {/* Caption: ash-out, then strip; ash-in after strip. Hidden during strip only. */}
             {showCaptionLayer && (
               <>
                 <div className="service-image-slider-scrim" aria-hidden />
@@ -232,7 +281,7 @@ export default function ServiceCarousel() {
                   animationKey={activeIndex}
                   isExiting={isCaptionExiting}
                   reducedMotion={reducedMotion}
-                  onExitComplete={handleCaptionAshExitComplete}
+                  onExitComplete={onCaptionExitComplete}
                   className="service-image-slider-caption"
                 >
                   <p className="service-image-slider-kicker">Featured</p>
@@ -259,10 +308,10 @@ export default function ServiceCarousel() {
                     key={slide.title}
                     type="button"
                     role="tab"
-                    disabled={isAnimating || isCaptionExiting}
-                    aria-selected={index === activeIndex && !isAnimating && !isCaptionExiting}
+                    disabled={transitionBusy}
+                    aria-selected={index === activeIndex && !transitionBusy}
                     aria-label={`Show slide ${index + 1}: ${slide.title}`}
-                    className={`service-image-slider-dot${index === activeIndex && !isAnimating && !isCaptionExiting ? " is-active" : ""}`}
+                    className={`service-image-slider-dot${index === activeIndex && !transitionBusy ? " is-active" : ""}`}
                     onClick={() => goToIndex(index)}
                   />
                 ))}
@@ -272,7 +321,7 @@ export default function ServiceCarousel() {
                   type="button"
                   className="service-image-slider-arrow button-lift"
                   onClick={goPrev}
-                  disabled={isAnimating || isCaptionExiting}
+                  disabled={transitionBusy}
                   aria-label="Previous slide"
                 >
                   ‹
@@ -281,7 +330,7 @@ export default function ServiceCarousel() {
                   type="button"
                   className="service-image-slider-arrow button-lift"
                   onClick={goNext}
-                  disabled={isAnimating || isCaptionExiting}
+                  disabled={transitionBusy}
                   aria-label="Next slide"
                 >
                   ›

@@ -31,7 +31,8 @@ export default function Projects() {
         <Animate className="max-w-4xl" delay={100}>
           <p className="section-kicker">Latest Projects</p>
           <h2 className="section-title mt-5">
-            Representative work across infrastructure, building services, and interiors.
+            Representative work across infrastructure, <span className="section-title-em">building services</span>, and
+            interiors.
           </h2>
         </Animate>
 
