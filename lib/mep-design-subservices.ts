@@ -12,28 +12,43 @@ export type MepDesignSubservice = {
 
 export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
   {
-    id: "mep-services",
-    imageFile: "MEPservices.png",
-    title: "MEP services",
+    id: "architectural-service-bim",
+    imageFile: "ArchitecturalserviceBIM.png",
+    title: "Architecture services",
     summary:
-      "Integrated mechanical, electrical, and plumbing design with coordinated routing, load calculations, and drawing sets ready for site and approvals.",
+      "Architecture-led BIM production with disciplined families, templates, and sheets so the model stays authoritative from concept to construction issue.",
     sections: [
       {
-        heading: "Mechanical",
+        heading: "BIM execution",
         paragraphs: [
-          "HVAC concepts, air distribution, equipment schedules, and duct routing coordinated with architecture and structure for comfort, energy intent, and maintainable layouts.",
+          "Model organisation, naming, and LOD expectations agreed up front so structure and services plug into a single coordinated environment.",
         ],
       },
       {
-        heading: "Electrical",
+        heading: "Deliverables",
         paragraphs: [
-          "Power distribution, lighting, earthing, and panel schedules with clear circuiting assumptions, cable routing zones, and interfaces for ELV and life-safety coordination.",
+          "Plans, elevations, sections, and details issued from the model with revision control and clear GFC / tender packages for stakeholders.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "interior-designing",
+    imageFile: "Interiordesigning.png",
+    title: "Interior services",
+    summary:
+      "Interior layouts, finishes, and ceiling coordination aligned with MEP terminals—keeping sight lines, lighting, and AC delivery consistent with the design intent.",
+    sections: [
+      {
+        heading: "Spatial and finish intent",
+        paragraphs: [
+          "Layouts, material palettes, and joinery coordination that respect HVAC grilles, lighting positions, and access panels without crowding the architectural story.",
         ],
       },
       {
-        heading: "Plumbing and fire fighting",
+        heading: "Ceiling and services integration",
         paragraphs: [
-          "Water supply, drainage, risers, and pump head assumptions with coordinated sleeves, shaft fit, and schematic-to-layout alignment for installation teams.",
+          "Reflected ceiling plans coordinated with duct levels, sprinkler zones, and light fixtures so site teams receive one clear composite picture.",
         ],
       },
     ],
@@ -60,43 +75,28 @@ export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
     ],
   },
   {
-    id: "architectural-service-bim",
-    imageFile: "ArchitecturalserviceBIM.png",
-    title: "Architectural service & BIM",
+    id: "mep-services",
+    imageFile: "MEPservices.png",
+    title: "MEP services",
     summary:
-      "Architecture-led BIM production with disciplined families, templates, and sheets so the model stays authoritative from concept to construction issue.",
+      "Integrated mechanical, electrical, and plumbing design with coordinated routing, load calculations, and drawing sets ready for site and approvals.",
     sections: [
       {
-        heading: "BIM execution",
+        heading: "Mechanical",
         paragraphs: [
-          "Model organisation, naming, and LOD expectations agreed up front so structure and services plug into a single coordinated environment.",
+          "HVAC concepts, air distribution, equipment schedules, and duct routing coordinated with architecture and structure for comfort, energy intent, and maintainable layouts.",
         ],
       },
       {
-        heading: "Deliverables",
+        heading: "Electrical",
         paragraphs: [
-          "Plans, elevations, sections, and details issued from the model with revision control and clear GFC / tender packages for stakeholders.",
-        ],
-      },
-    ],
-  },
-  {
-    id: "interior-designing",
-    imageFile: "Interiordesigning.png",
-    title: "Interior designing",
-    summary:
-      "Interior layouts, finishes, and ceiling coordination aligned with MEP terminals—keeping sight lines, lighting, and AC delivery consistent with the design intent.",
-    sections: [
-      {
-        heading: "Spatial and finish intent",
-        paragraphs: [
-          "Layouts, material palettes, and joinery coordination that respect HVAC grilles, lighting positions, and access panels without crowding the architectural story.",
+          "Power distribution, lighting, earthing, and panel schedules with clear circuiting assumptions, cable routing zones, and interfaces for ELV and life-safety coordination.",
         ],
       },
       {
-        heading: "Ceiling and services integration",
+        heading: "Plumbing and fire fighting",
         paragraphs: [
-          "Reflected ceiling plans coordinated with duct levels, sprinkler zones, and light fixtures so site teams receive one clear composite picture.",
+          "Water supply, drainage, risers, and pump head assumptions with coordinated sleeves, shaft fit, and schematic-to-layout alignment for installation teams.",
         ],
       },
     ],
