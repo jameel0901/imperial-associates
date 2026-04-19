@@ -16,8 +16,8 @@ const mosaic = [
   },
   {
     src: "/images/MEP-services.png",
-    label: "MEP",
-    alt: "Mechanical, electrical, and plumbing design",
+    label: "BIM",
+    alt: "BIM services and building systems coordination",
   },
   {
     src: "/images/architecture.png",
@@ -116,7 +116,7 @@ export default function Hero() {
                 to <span className="section-title-em">built reality</span>
               </span>
               <span className="hero-v2-line hero-v2-line--sub">
-                Civil, geomatics, MEP &amp; interiors—one accountable thread.
+                Civil, geomatics, BIM &amp; interiors—one accountable thread.
               </span>
             </h1>
 
@@ -141,7 +141,7 @@ export default function Hero() {
             </div>
 
             <ul className="hero-v2-chips" aria-label="Core disciplines">
-              {["Civil & structures", "Geomatics & roads", "MEP & interiors"].map((t) => (
+              {["Civil & structures", "Geomatics & roads", "BIM & interiors"].map((t) => (
                 <li key={t} className="hero-v2-chip">
                   {t}
                 </li>

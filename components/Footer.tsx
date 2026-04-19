@@ -20,7 +20,7 @@ export default function Footer() {
               <p id="footer-heading" className="site-footer__wordmark">
                 Imperial Associates
               </p>
-              <p className="site-footer__tagline">Civil · MEP · Survey · Interiors</p>
+              <p className="site-footer__tagline">Civil · BIM · Survey · Interiors</p>
             </div>
           </div>
         </div>

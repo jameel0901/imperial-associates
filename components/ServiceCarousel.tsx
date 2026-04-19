@@ -21,10 +21,10 @@ const slides = [
     alt: "DGPS and drone survey for roads and corridors",
   },
   {
-    title: "MEP Design Services",
-    subtitle: "Mechanical, electrical, and plumbing design with coordinated documentation.",
+    title: "BIM Services",
+    subtitle: "Modelling, multi-discipline coordination, and issue-ready documentation for building services.",
     image: "/images/MEP-services.png",
-    alt: "MEP mechanical electrical plumbing design",
+    alt: "BIM services and building systems coordination",
   },
   {
     title: "Civil Architecture",

@@ -9,7 +9,7 @@ export default function Services() {
         <Animate className="max-w-4xl" delay={80}>
           <p className="section-kicker">Services</p>
           <h2 id="services-heading" className="section-title mt-5">
-            Civil, survey, MEP, and architecture—<span className="section-title-em">pick</span> a discipline to see how we
+            Civil, survey, BIM, and architecture—<span className="section-title-em">pick</span> a discipline to see how we
             support it end to end.
           </h2>
         </Animate>

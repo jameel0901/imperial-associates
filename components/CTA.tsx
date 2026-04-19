@@ -9,12 +9,12 @@ export default function CTA() {
           <div className="mt-6 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
             <div className="max-w-4xl">
               <h2 className="section-title">
-                Let&apos;s scope your next civil, survey, MEP, or{" "}
+                Let&apos;s scope your next civil, survey, BIM, or{" "}
                 <span className="section-title-em">interior assignment</span>.
               </h2>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-white/78">
                 Share the location, discipline mix, and deliverables you need. We can support DGPS and
-                drone road surveys, highway design, civil construction planning, MEP documentation, and
+                drone road surveys, highway design, civil construction planning, BIM documentation, and
                 interior coordination from early studies through execution-ready packages.
               </p>
             </div>

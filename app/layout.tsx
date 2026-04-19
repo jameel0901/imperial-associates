@@ -15,9 +15,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Imperial Associates | Civil, MEP, Survey & Interior",
+  title: "Imperial Associates | Civil, BIM, Survey & Interior",
   description:
-    "Civil construction, road and highway design, DGPS and drone survey, MEP engineering, and interior design—integrated delivery for infrastructure and built environments.",
+    "Civil construction, road and highway design, DGPS and drone survey, BIM services, and interior design—integrated delivery for infrastructure and built environments.",
 };
 
 export const viewport: Viewport = {

@@ -57,7 +57,7 @@ export default function Navbar() {
                 Imperial Associates
               </p>
               <p className="mt-1 hidden text-[10px] uppercase tracking-[0.24em] text-[var(--muted)] sm:block sm:text-xs sm:tracking-[0.28em]">
-                Civil · MEP · Survey · Interiors
+                Civil · BIM · Survey · Interiors
               </p>
             </div>
           </a>

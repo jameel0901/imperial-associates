@@ -71,10 +71,10 @@ export const SERVICES: ServiceDetail[] = [
   },
   {
     slug: "mep-design",
-    title: "MEP design",
-    listLabel: "MEP design",
+    title: "BIM Services",
+    listLabel: "BIM",
     summary:
-      "Mechanical, electrical, and plumbing design with coordinated routing, loads, and documentation for contractors and approvals.",
+      "BIM-led modelling, coordination, and documentation for building services—clash-ready packages, disciplined sheets, and interfaces contractors can build from.",
     sections: [
       {
         heading: "Building services engineering",

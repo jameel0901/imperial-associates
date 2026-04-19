@@ -12,9 +12,9 @@ const stats = [
       "DGPS and drone survey, topographic and corridor capture, alignment and highway design, layout and stakeout.",
   },
   {
-    value: "MEP design",
+    value: "BIM Services",
     label:
-      "Mechanical, electrical, and plumbing design, routing, coordination, and documentation for reliable building services.",
+      "BIM production, services coordination, clash workflows, and documentation packages aligned to how teams build on site.",
   },
   {
     value: "Interior design",
@@ -30,7 +30,7 @@ export default function Stats() {
         <Animate className="max-w-3xl" delay={80}>
           <p className="section-kicker">About Us</p>
           <h2 className="section-title mt-5 max-w-4xl">
-            Civil construction, road survey and design, MEP engineering, and interior design—delivered as{" "}
+            Civil construction, road survey and design, BIM services, and interior design—delivered as{" "}
             <span className="section-title-em">one practice</span>.
           </h2>
         </Animate>
