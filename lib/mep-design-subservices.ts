@@ -146,5 +146,5 @@ export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
 ];
 
 export function mepDesignSubImageSrc(imageFile: string): string {
-  return `/images/design-services/${imageFile}`;
+  return encodeURI(`/images/design-services/${imageFile}`);
 }

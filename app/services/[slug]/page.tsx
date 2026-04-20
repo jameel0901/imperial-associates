@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import fs from "node:fs";
+import path from "node:path";
 import { notFound } from "next/navigation";
 import { MEP_DESIGN_SUBSERVICES, mepDesignSubImageSrc } from "@/lib/mep-design-subservices";
 import {
@@ -11,6 +13,32 @@ import {
 } from "@/lib/services-detail";
 
 type Props = { params: Promise<{ slug: string }> };
+
+function getBimProjectImagePaths(): string[] {
+  const dir = path.join(process.cwd(), "public", "images", "BIMprojects");
+  try {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const files = entries
+      .filter((e) => e.isFile())
+      .map((e) => e.name)
+      .filter((name) => /\.(png|jpe?g|webp|gif|avif)$/i.test(name))
+      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
+
+    return files.map((file) => encodeURI(`/images/BIMprojects/${file}`));
+  } catch {
+    return [];
+  }
+}
+
+function imageAltFromPath(path: string) {
+  const base = decodeURIComponent(path.split("/").pop() ?? path);
+  const withoutExt = base.replace(/\.[^.]+$/, "");
+  return withoutExt.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function imageTitleFromPath(path: string) {
+  return imageAltFromPath(path);
+}
 
 export function generateStaticParams(): { slug: ServiceSlug }[] {
   return SERVICE_SLUGS.map((slug) => ({ slug }));
@@ -125,6 +153,42 @@ export default async function ServiceDetailPage({ params }: Props) {
               </div>
             </section>
           ))}
+
+        {isMepDesignPage && (
+          <section className="glass-panel rounded-[1.75rem] p-6 md:p-8 lg:p-10">
+            <header className="max-w-3xl">
+              <h2 className={mepH2Class}>Our Projects</h2>
+              <p className="mt-4 text-base leading-8 text-[var(--muted)]">
+                Recent BIM deliverables across residential, hospitality, infrastructure, and island
+                development packages.
+              </p>
+            </header>
+
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {getBimProjectImagePaths().map((src) => (
+                <div
+                  key={src}
+                  className="overflow-hidden rounded-2xl border border-[var(--line)] bg-white/70 shadow-[var(--shadow)]"
+                >
+                  <div className="relative aspect-[4/3] w-full">
+                    <Image
+                      src={src}
+                      alt={imageAltFromPath(src)}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                  <div className="px-4 py-4">
+                    <p className="display-font text-[1.05rem] leading-snug text-[var(--primary)]">
+                      {imageTitleFromPath(src)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {service.sections.map((section) => (
           <section key={section.heading} className="glass-panel rounded-[1.75rem] p-6 md:p-8">

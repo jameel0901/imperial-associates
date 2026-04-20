@@ -9,16 +9,16 @@ const projects = [
     text: "DGPS control, aerial mapping support, alignment review, and drawing packages for planning teams, contractors, and approval-stage submissions.",
   },
   {
-    title: "Mixed-Use Podium Services",
-    category: "MEP coordination",
-    image: "/images/project-industrial.jpg",
-    text: "Mechanical, electrical, and plumbing routing with coordinated risers and plant areas for a multi-level commercial and retail shell.",
+    title: "BIM Modelling & Documentation Package",
+    category: "BIM Services",
+    image: "/images/Project-BIM.jpg",
+    text: "Multi-discipline BIM modelling for services with clash detection, coordinated plant/shaft zones, and issue-ready drawings that reduce site rework.",
   },
   {
-    title: "Residential Layout & Interior Package",
+    title: "Civil Layout & Interior Fit-Out Package",
     category: "Civil & interior design",
-    image: "/images/project-layout.jpg",
-    text: "Road hierarchy and plot surveys paired with interior space planning and finish coordination for a cohesive handover story.",
+    image: "/images/Project-InteriorDesign.png",
+    text: "Site layout planning and levels paired with interior space planning, finishes, and reflected ceiling coordination—kept buildable with services interfaces.",
   },
 ];
 
