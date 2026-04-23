@@ -43,7 +43,7 @@ export default function Navbar() {
           <a href="#top" className="flex min-w-0 items-center gap-0">
             <span className="relative inline-flex h-20 w-fit shrink-0 items-center sm:h-24">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt="Imperial Associates"
                 width={400}
                 height={133}

@@ -11,25 +11,25 @@ const slides = [
   {
     title: "Civil Construction",
     subtitle: "Earthworks, structures, and site execution for durable civil packages.",
-    image: "/images/civil-constructions.png",
+    image: "/images/civil-constructions.webp",
     alt: "Civil construction and site execution",
   },
   {
     title: "DGPS and Drone Survey",
     subtitle: "Precision control networks and aerial corridor capture for roads.",
-    image: "/images/DGPS%26Drone-survey.png",
+    image: "/images/DGPS%26Drone-survey.webp",
     alt: "DGPS and drone survey for roads and corridors",
   },
   {
     title: "BIM MEP Services",
     subtitle: "Modelling, multi-discipline coordination, and issue-ready documentation for building services.",
-    image: "/images/MEP-services.png",
+    image: "/images/MEP-services.webp",
     alt: "BIM services and building systems coordination",
   },
   {
     title: "Architecture & Interior design",
     subtitle: "Spatial planning and architectural coordination from shell to fit-out.",
-    image: "/images/architecture.png",
+    image: "/images/architecture.webp",
     alt: "Architecture and spatial planning",
   },
 ] as const;

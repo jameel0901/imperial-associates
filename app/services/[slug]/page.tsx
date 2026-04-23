@@ -29,17 +29,32 @@ function getBimProjectImagePaths(): string[] {
     const files = entries
       .filter((e) => e.isFile())
       .map((e) => e.name)
-      .filter((name) => /\.(png|jpe?g|webp|gif|avif)$/i.test(name))
-      .sort((a, b) => {
-        const an = trailingSerial(a);
-        const bn = trailingSerial(b);
-        if (an !== null && bn !== null && an !== bn) return an - bn;
-        if (an !== null && bn === null) return -1;
-        if (an === null && bn !== null) return 1;
-        return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
-      });
+      .filter((name) => /\.(png|jpe?g|webp|gif|avif)$/i.test(name));
 
-    return files.map((file) => encodeURI(`/images/BIMprojects/${file}`));
+    // Prefer .webp if both .webp and a source format exist.
+    const byStem = new Map<string, string[]>();
+    for (const name of files) {
+      const stem = name.replace(/\.[^.]+$/, "");
+      const list = byStem.get(stem) ?? [];
+      list.push(name);
+      byStem.set(stem, list);
+    }
+
+    const preferred = Array.from(byStem.values()).map((list) => {
+      const webp = list.find((n) => /\.webp$/i.test(n));
+      return webp ?? list[0]!;
+    });
+
+    preferred.sort((a, b) => {
+      const an = trailingSerial(a);
+      const bn = trailingSerial(b);
+      if (an !== null && bn !== null && an !== bn) return an - bn;
+      if (an !== null && bn === null) return -1;
+      if (an === null && bn !== null) return 1;
+      return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+    });
+
+    return preferred.map((file) => encodeURI(`/images/BIMprojects/${file}`));
   } catch {
     return [];
   }
@@ -66,13 +81,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!service) {
     return { title: "Service | Imperial Associates" };
   }
-  const title = `${service.title} | Imperial Associates`;
   return {
-    title,
+    title: service.title,
     description: service.summary,
+    alternates: {
+      canonical: `/services/${service.slug}/`,
+    },
     openGraph: {
-      title,
+      title: service.title,
       description: service.summary,
+      url: `/services/${service.slug}/`,
     },
   };
 }

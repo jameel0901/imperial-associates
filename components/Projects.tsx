@@ -5,19 +5,19 @@ const projects = [
   {
     title: "Highway Corridor Upgrade",
     category: "Road design & geomatics",
-    image: "/images/project-highway.jpg",
+    image: "/images/project-highway.webp",
     text: "DGPS control, aerial mapping support, alignment review, and drawing packages for planning teams, contractors, and approval-stage submissions.",
   },
   {
     title: "BIM Modelling & Documentation Package",
     category: "BIM MEP Services",
-    image: "/images/Project-BIM.jpg",
+    image: "/images/Project-BIM.webp",
     text: "Multi-discipline BIM modelling for services with clash detection, coordinated plant/shaft zones, and issue-ready drawings that reduce site rework.",
   },
   {
     title: "Architecture & Interior design",
     category: "Interior design",
-    image: "/images/Project-InteriorDesign.png",
+    image: "/images/Project-InteriorDesign.webp",
     text: "Site layout planning and levels paired with interior space planning, finishes, and reflected ceiling coordination—kept buildable with services interfaces.",
   },
 ];

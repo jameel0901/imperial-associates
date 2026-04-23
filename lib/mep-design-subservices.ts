@@ -13,7 +13,7 @@ export type MepDesignSubservice = {
 export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
   {
     id: "architectural-service-bim",
-    imageFile: "ArchitecturalserviceBIM.png",
+    imageFile: "ArchitecturalserviceBIM.webp",
     title: "Architecture services",
     summary:
       "Architecture-led BIM production with disciplined families, templates, and sheets so the model stays authoritative from concept to construction issue.",
@@ -34,7 +34,7 @@ export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
   },
   {
     id: "interior-designing",
-    imageFile: "Interiordesigning.png",
+    imageFile: "Interiordesigning.webp",
     title: "Interior services",
     summary:
       "Interior layouts, finishes, and ceiling coordination aligned with MEP terminals—keeping sight lines, lighting, and AC delivery consistent with the design intent.",
@@ -55,7 +55,7 @@ export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
   },
   {
     id: "structural-services",
-    imageFile: "Structuralservices.png",
+    imageFile: "Structuralservices.webp",
     title: "Structural services",
     summary:
       "Structural modelling and documentation aligned with architectural grids and MEP penetrations—supporting coordination before concrete and steel hit site.",
@@ -76,7 +76,7 @@ export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
   },
   {
     id: "mep-services",
-    imageFile: "MEPservices.png",
+    imageFile: "MEPservices.webp",
     title: "MEP services",
     summary:
       "Integrated mechanical, electrical, and plumbing design with coordinated routing, load calculations, and drawing sets ready for site and approvals.",
@@ -103,7 +103,7 @@ export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
   },
   {
     id: "clash-detection",
-    imageFile: "ClashDetection.png",
+    imageFile: "ClashDetection.webp",
     title: "Clash detection",
     summary:
       "Multi-discipline clash reviews and clearance checks before site lock-in—reducing rework when structure, architecture, and MEP compete for the same space.",
@@ -124,7 +124,7 @@ export const MEP_DESIGN_SUBSERVICES: MepDesignSubservice[] = [
   },
   {
     id: "scan-to-bim",
-    imageFile: "ScantoBIM.png",
+    imageFile: "ScantoBIM.webp",
     title: "Scan to BIM",
     summary:
       "Laser scan and point-cloud workflows converted into accurate as-built BIM—ideal for retrofits, renovations, and verifying what was built against design.",

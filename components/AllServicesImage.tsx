@@ -10,7 +10,7 @@ export default function AllServicesImage() {
         </h2>
         <div className="mt-10 overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface-strong)] shadow-[var(--deep-shadow)]">
           <Image
-            src="/images/allServices.png"
+            src="/images/allServices.webp"
             alt="Overview of Imperial Associates services: civil construction, DGPS and drone survey, BIM services, architecture and interiors"
             width={1600}
             height={900}

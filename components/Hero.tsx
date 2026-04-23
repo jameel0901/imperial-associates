@@ -5,22 +5,22 @@ import { useEffect, useRef, useState } from "react";
 
 const mosaic = [
   {
-    src: "/images/civil-constructions.png",
+    src: "/images/civil-constructions.webp",
     label: "Civil",
     alt: "Civil construction and site works",
   },
   {
-    src: "/images/DGPS%26Drone-survey.png",
+    src: "/images/DGPS%26Drone-survey.webp",
     label: "Survey",
     alt: "DGPS and drone survey for corridors and roads",
   },
   {
-    src: "/images/MEP-services.png",
+    src: "/images/MEP-services.webp",
     label: "BIM",
     alt: "BIM services and building systems coordination",
   },
   {
-    src: "/images/architecture.png",
+    src: "/images/architecture.webp",
     label: "Architecture & Interior design",
     alt: "Architecture and interior design coordination",
   },

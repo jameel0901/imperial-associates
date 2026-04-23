@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="site-footer__brand-row">
             <div className="site-footer__logo-wrap">
               <Image
-                src="/images/logo.png"
+                src="/images/logo.webp"
                 alt=""
                 width={400}
                 height={133}
