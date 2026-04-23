@@ -4,14 +4,10 @@ import { SERVICES } from "@/lib/services-detail";
 
 export default function Services() {
   return (
-    <section id="services" className="px-3 py-16 md:py-24" aria-labelledby="services-heading">
+    <section id="services" className="px-3 py-16 md:py-24" aria-label="Services">
       <div className="section-shell">
         <Animate className="max-w-4xl" delay={80}>
           <p className="section-kicker">Services</p>
-          <h2 id="services-heading" className="section-title mt-5">
-            Civil, survey, BIM, and architecture—<span className="section-title-em">pick</span> a discipline to see how we
-            support it end to end.
-          </h2>
         </Animate>
 
         <ul className="services-index-list mt-16 md:mt-24" role="list">

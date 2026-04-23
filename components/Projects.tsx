@@ -3,20 +3,20 @@ import Animate from "./Animate";
 
 const projects = [
   {
-    title: "State Highway Corridor Upgrade",
+    title: "Highway Corridor Upgrade",
     category: "Road design & geomatics",
     image: "/images/project-highway.jpg",
     text: "DGPS control, aerial mapping support, alignment review, and drawing packages for planning teams, contractors, and approval-stage submissions.",
   },
   {
     title: "BIM Modelling & Documentation Package",
-    category: "BIM Services",
+    category: "BIM MEP Services",
     image: "/images/Project-BIM.jpg",
     text: "Multi-discipline BIM modelling for services with clash detection, coordinated plant/shaft zones, and issue-ready drawings that reduce site rework.",
   },
   {
-    title: "Civil Layout & Interior Fit-Out Package",
-    category: "Civil & interior design",
+    title: "Architecture & Interior design",
+    category: "Interior design",
     image: "/images/Project-InteriorDesign.png",
     text: "Site layout planning and levels paired with interior space planning, finishes, and reflected ceiling coordination—kept buildable with services interfaces.",
   },

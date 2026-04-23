@@ -71,8 +71,8 @@ export const SERVICES: ServiceDetail[] = [
   },
   {
     slug: "mep-design",
-    title: "BIM Services",
-    listLabel: "BIM",
+    title: "BIM MEP Services",
+    listLabel: "BIM MEP Services",
     summary:
       "BIM-led modelling, coordination, and documentation for building services—clash-ready packages, disciplined sheets, and interfaces contractors can build from.",
     sections: [
@@ -92,8 +92,8 @@ export const SERVICES: ServiceDetail[] = [
   },
   {
     slug: "civil-architecture-design",
-    title: "Civil architecture design",
-    listLabel: "Civil architecture design",
+    title: "Architecture & Interior design",
+    listLabel: "Architecture & Interior design",
     summary:
       "Spatial planning, architectural coordination, and interior intent aligned with structure and services for buildable outcomes.",
     sections: [

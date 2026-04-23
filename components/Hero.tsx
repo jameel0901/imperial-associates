@@ -21,8 +21,8 @@ const mosaic = [
   },
   {
     src: "/images/architecture.png",
-    label: "Architecture",
-    alt: "Architecture and spatial planning",
+    label: "Architecture & Interior design",
+    alt: "Architecture and interior design coordination",
   },
 ] as const;
 

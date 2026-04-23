@@ -7,17 +7,17 @@ const stats = [
       "Earthworks, foundations, structural packages, and site execution for infrastructure and building shells.",
   },
   {
-    value: "Roads & geomatics",
+    value: "DGPS & Drone Survey",
     label:
       "DGPS and drone survey, topographic and corridor capture, alignment and highway design, layout and stakeout.",
   },
   {
-    value: "BIM Services",
+    value: "BIM MEP Services",
     label:
       "BIM production, services coordination, clash workflows, and documentation packages aligned to how teams build on site.",
   },
   {
-    value: "Interior design",
+    value: "Architecture & Interior design",
     label:
       "Space planning, finishes, and coordination with structure and MEP so interiors are buildable and cohesive.",
   },
@@ -30,8 +30,8 @@ export default function Stats() {
         <Animate className="max-w-3xl" delay={80}>
           <p className="section-kicker">About Us</p>
           <h2 className="section-title mt-5 max-w-4xl">
-            Civil construction, road survey and design, BIM services, and interior design—delivered as{" "}
-            <span className="section-title-em">one practice</span>.
+            From precision survey to built reality, we deliver accurate, end-to-end solutions that turn vision into lasting{" "}
+            <span className="section-title-em">results</span>.
           </h2>
         </Animate>
 

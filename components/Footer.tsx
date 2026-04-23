@@ -39,6 +39,11 @@ export default function Footer() {
                 +91 77601 58960
               </a>
             </p>
+            <p className="site-footer__text">
+              <a href="tel:+919964632271" className="site-footer__link">
+                +91 99646 32271
+              </a>
+            </p>
           </div>
           <div className="site-footer__card col-span-2">
             <span className="site-footer__label">Email</span>

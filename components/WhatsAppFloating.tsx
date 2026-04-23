@@ -3,26 +3,31 @@
 import { usePathname } from "next/navigation";
 import { useSliderNav } from "./SliderNavContext";
 
-const WHATSAPP_E164 = "917760158960";
+const WHATSAPP_E164_DEFAULT = "917760158960";
+const WHATSAPP_E164_BIM_MEP = "919964632271";
 const DEFAULT_MESSAGE =
   "Hello — I'd like to enquire about your services at Imperial Associates.";
 
-function buildWhatsAppHref(): string {
+function buildWhatsAppHref(e164: string): string {
   const text = encodeURIComponent(DEFAULT_MESSAGE);
-  return `https://wa.me/${WHATSAPP_E164}?text=${text}`;
+  return `https://wa.me/${e164}?text=${text}`;
 }
 
 export default function WhatsAppFloating() {
   const pathname = usePathname();
   const { sliderInView } = useSliderNav();
-  const onHome = pathname === "/";
+  const normalizedPath = (pathname ?? "/").replace(/\/+$/, "") || "/";
+  const onHome = normalizedPath === "/";
+  const onBimMepService = normalizedPath.endsWith("/services/mep-design");
   if (onHome && sliderInView) {
     return null;
   }
 
+  const whatsappE164 = onBimMepService ? WHATSAPP_E164_BIM_MEP : WHATSAPP_E164_DEFAULT;
+
   return (
     <a
-      href={buildWhatsAppHref()}
+      href={buildWhatsAppHref(whatsappE164)}
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-float button-lift fixed bottom-5 right-5 z-[45] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-2 ring-white/90 transition hover:bg-[#20bd5a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] sm:bottom-7 sm:right-7"

@@ -14,6 +14,14 @@ import {
 
 type Props = { params: Promise<{ slug: string }> };
 
+function trailingSerial(name: string): number | null {
+  const withoutExt = name.replace(/\.[^.]+$/, "");
+  const m = withoutExt.match(/(?:^|[^\d])(\d+)\s*$/);
+  if (!m) return null;
+  const n = Number(m[1]);
+  return Number.isFinite(n) ? n : null;
+}
+
 function getBimProjectImagePaths(): string[] {
   const dir = path.join(process.cwd(), "public", "images", "BIMprojects");
   try {
@@ -22,7 +30,14 @@ function getBimProjectImagePaths(): string[] {
       .filter((e) => e.isFile())
       .map((e) => e.name)
       .filter((name) => /\.(png|jpe?g|webp|gif|avif)$/i.test(name))
-      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
+      .sort((a, b) => {
+        const an = trailingSerial(a);
+        const bn = trailingSerial(b);
+        if (an !== null && bn !== null && an !== bn) return an - bn;
+        if (an !== null && bn === null) return -1;
+        if (an === null && bn !== null) return 1;
+        return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
+      });
 
     return files.map((file) => encodeURI(`/images/BIMprojects/${file}`));
   } catch {
@@ -33,7 +48,8 @@ function getBimProjectImagePaths(): string[] {
 function imageAltFromPath(path: string) {
   const base = decodeURIComponent(path.split("/").pop() ?? path);
   const withoutExt = base.replace(/\.[^.]+$/, "");
-  return withoutExt.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+  const cleaned = withoutExt.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+  return cleaned.replace(/\s*\d+\s*$/, "").trim();
 }
 
 function imageTitleFromPath(path: string) {
