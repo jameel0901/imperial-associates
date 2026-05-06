@@ -29,7 +29,7 @@ export default function Footer() {
           <div className="site-footer__card">
             <span className="site-footer__label">Address</span>
             <p className="site-footer__text">
-              10-11-109/13, Janta Press Colony, Raichur - 584101
+              12-11-109/13, Janta Press Colony, Raichur - 584101
             </p>
           </div>
           <div className="site-footer__card">
