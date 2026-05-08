@@ -84,6 +84,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: service.title,
     description: service.summary,
+    keywords: [
+      "Imperial Associates",
+      "Raichur",
+      "Survey",
+      "BIM",
+      "MEP",
+      service.title,
+    ],
     alternates: {
       canonical: `/services/${service.slug}/`,
     },
@@ -91,6 +99,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: service.title,
       description: service.summary,
       url: `/services/${service.slug}/`,
+      images: [{ url: "/opengraph-image.png", width: 1200, height: 630, alt: "Imperial Associates" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: service.title,
+      description: service.summary,
+      images: ["/twitter-image.png"],
     },
   };
 }
