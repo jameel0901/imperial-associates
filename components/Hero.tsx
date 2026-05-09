@@ -116,13 +116,14 @@ export default function Hero() {
                 to <span className="section-title-em">built reality</span>
               </span>
               <span className="hero-v2-line hero-v2-line--sub">
-                Civil, geomatics, BIM &amp; interiors—one accountable thread.
+                Survey, BIM &amp; MEP, and civil delivery—one accountable thread.
               </span>
             </h1>
 
             <p className="hero-v2-lede">
-              Road corridors, structures, building services, and interior coordination—documented
-              and delivered so field, design, and approvals stay aligned.
+              Based in <strong>Raichur, Karnataka, India</strong>—we deliver DGPS &amp; drone survey,
+              BIM/MEP coordination, civil works, and interiors with documentation that keeps field,
+              design, and approvals aligned.
             </p>
 
             <div className="hero-v2-actions">

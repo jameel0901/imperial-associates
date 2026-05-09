@@ -21,13 +21,13 @@ const slides = [
     alt: "DGPS and drone survey for roads and corridors",
   },
   {
-    title: "BIM MEP Services",
+    title: "BIM Services",
     subtitle: "Modelling, multi-discipline coordination, and issue-ready documentation for building services.",
     image: "/images/MEP-services.webp",
     alt: "BIM services and building systems coordination",
   },
   {
-    title: "Architecture & Interior design",
+    title: "Architecture & Interior Design",
     subtitle: "Spatial planning and architectural coordination from shell to fit-out.",
     image: "/images/architecture.webp",
     alt: "Architecture and spatial planning",
