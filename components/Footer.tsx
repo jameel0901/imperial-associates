@@ -41,7 +41,7 @@ export default function Footer() {
             </p>
             <p className="site-footer__text">
               <a href="tel:+917204490143" className="site-footer__link">
-                +917204490143
+                +91 7204490143
               </a>
             </p>
           </div>
