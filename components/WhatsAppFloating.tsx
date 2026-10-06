@@ -3,8 +3,8 @@
 import { usePathname } from "next/navigation";
 import { useSliderNav } from "./SliderNavContext";
 
-const WHATSAPP_E164_DEFAULT = "917760158960";
-const WHATSAPP_E164_BIM_MEP = "919964632271";
+const WHATSAPP_E164_DEFAULT = "91 80888 13665";
+const WHATSAPP_E164_BIM_MEP = "91 72044 90143";
 const DEFAULT_MESSAGE =
   "Hello — I'd like to enquire about your services at Imperial Associates.";
 

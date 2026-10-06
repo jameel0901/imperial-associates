@@ -29,19 +29,19 @@ export default function Footer() {
           <div className="site-footer__card">
             <span className="site-footer__label">Address</span>
             <p className="site-footer__text">
-              12-11-109/13, Janta Press Colony, Raichur - 584101
+              12-11-109/8, Janta Press Colony, Raichur - 584101
             </p>
           </div>
           <div className="site-footer__card">
             <span className="site-footer__label">Contact</span>
             <p className="site-footer__text">
-              <a href="tel:+917760158960" className="site-footer__link">
-                +91 77601 58960
+              <a href="tel:+91 80888 13665" className="site-footer__link">
+                +91 80888 13665
               </a>
             </p>
             <p className="site-footer__text">
-              <a href="tel:+919964632271" className="site-footer__link">
-                +91 99646 32271
+              <a href="tel:+917204490143" className="site-footer__link">
+                +917204490143
               </a>
             </p>
           </div>
